@@ -1,0 +1,169 @@
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:keepScreenOn="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/speed"
+            android:textSize="22dp" />
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" m/s"
+            android:id="@+id/speed_unit" />
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=", "/>
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/gforce"
+            android:textSize="22dp" />
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" G"
+            android:id="@+id/gforce_unit" />
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=", "/>
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/distance"
+            android:textSize="22dp" />
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" m"
+            android:id="@+id/distance_unit" />
+
+        <LinearLayout
+            android:gravity="center|right"
+            android:layout_width="288dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_weight="0.53">
+
+            <TextView
+                android:editable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:id="@+id/lat" />
+
+            <TextView
+                android:editable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="," />
+
+            <TextView
+                android:editable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:id="@+id/lon" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:weightSum="1">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/speech_synthesis"
+            android:labelFor="@+id/speech_synthesis_label"/>
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/speechSyn"
+            android:id="@+id/speech_synthesis_label"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GyroAccel"
+            android:id="@+id/samplingAccelGyro"
+            android:checked="false"
+            android:layout_weight="0.17" />
+
+    </LinearLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="275dp" android:id="@+id/map" tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_weight="0.93" />
+
+    <TextView
+        android:layout_width="73dp"
+        android:layout_height="27dp"
+        android:text="Accel"
+        android:id="@+id/gyrosensorname"
+        android:layout_gravity="right" />
+
+    <TextView
+        android:layout_width="76dp"
+        android:layout_height="wrap_content"
+        android:text="Count"
+        android:id="@+id/samplecounter"
+        android:layout_gravity="right" />
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:id="@+id/statusMessageTv"
+        android:layout_gravity="right" />
+
+    <raunio.gforcetracker.BallPanel
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/ballPanel"
+        android:layout_gravity="left|right" />
+
+    <TextView
+        android:layout_width="62dp"
+        android:layout_height="26dp"
+        android:text="Gyro"
+        android:id="@+id/accelsensorname"
+        android:layout_gravity="right" />
+
+</LinearLayout>

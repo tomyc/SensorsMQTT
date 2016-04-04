@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GForceTracker</string>
+    <string name="speechSyn">Komunikaty głosowe</string>
+    <string name="title_activity_maps">G Force Tracker</string>
+    <string name="sampling_text">Pomiar</string>
+</resources>
