@@ -1,15 +1,32 @@
-<LinearLayout
-    android:orientation="vertical"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
     android:keepScreenOn="true"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:weightSum="1">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1">
+
+        <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/lat"
+            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
+            android:layout_alignBaseline="@+id/distance_unit"
+            android:layout_alignBottom="@+id/distance_unit"
+            android:layout_toRightOf="@+id/samplingAccelGyro"
+            android:layout_toEndOf="@+id/samplingAccelGyro" />
+
+    <TextView
+            android:editable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/lon"
+        android:layout_alignBaseline="@+id/samplingAccelGyro"
+        android:layout_alignBottom="@+id/samplingAccelGyro"
+        android:layout_alignLeft="@+id/lat"
+        android:layout_alignStart="@+id/lat" />
 
         <TextView
             android:editable="false"
@@ -17,153 +34,144 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:id="@+id/speed"
-            android:textSize="22dp" />
+            android:textSize="22dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/speed_unit" />
 
         <TextView
             android:editable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" m/s"
-            android:id="@+id/speed_unit" />
+            android:id="@+id/speed_unit"
+            android:layout_above="@+id/speech_synthesis"
+            android:layout_toLeftOf="@+id/samplingAccelGyro"
+            android:layout_toStartOf="@+id/samplingAccelGyro" />
 
-        <TextView
-            android:editable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=", "/>
-
-        <TextView
+    <TextView
             android:editable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
             android:id="@+id/gforce"
-            android:textSize="22dp" />
+            android:textSize="22dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp" />
 
         <TextView
             android:editable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" G"
-            android:id="@+id/gforce_unit" />
+            android:id="@+id/gforce_unit"
+            android:layout_above="@+id/speech_synthesis"
+            android:layout_toRightOf="@+id/gforce"
+            android:layout_toEndOf="@+id/gforce" />
 
-        <TextView
-            android:editable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=", "/>
-
-        <TextView
+    <TextView
             android:editable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
             android:id="@+id/distance"
-            android:textSize="22dp" />
+            android:textSize="22dp"
+            android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/speech_synthesis" />
 
         <TextView
             android:editable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" m"
-            android:id="@+id/distance_unit" />
-
-        <LinearLayout
-            android:gravity="center|right"
-            android:layout_width="288dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_weight="0.53">
-
-            <TextView
-                android:editable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:id="@+id/lat" />
-
-            <TextView
-                android:editable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="," />
-
-            <TextView
-                android:editable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:id="@+id/lon" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:weightSum="1">
+            android:id="@+id/distance_unit"
+            android:layout_above="@+id/samplingAccelGyro"
+            android:layout_toRightOf="@+id/distance"
+            android:layout_toEndOf="@+id/distance" />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/speech_synthesis"
-            android:labelFor="@+id/speech_synthesis_label"/>
+            android:labelFor="@+id/speech_synthesis_label"
+            android:text="Speech synthesis"
+            android:layout_below="@+id/speed"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-        <TextView
-            android:editable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/speechSyn"
-            android:id="@+id/speech_synthesis_label"/>
-
-        <CheckBox
+    <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="GyroAccel"
             android:id="@+id/samplingAccelGyro"
             android:checked="false"
-            android:layout_weight="0.17" />
+            android:layout_weight="0.17"
+            android:layout_alignBottom="@+id/speech_synthesis"
+            android:layout_toRightOf="@+id/speech_synthesis"
+            android:layout_toEndOf="@+id/speech_synthesis" />
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gyro"
+            android:id="@+id/accelsensorname"
+            android:layout_gravity="right"
+            android:layout_above="@+id/statusMessageTv"
+            android:layout_alignLeft="@+id/statusMessageTv"
+            android:layout_alignStart="@+id/statusMessageTv" />
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-        android:layout_height="275dp" android:id="@+id/map" tools:context=".MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_weight="0.93" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:id="@+id/statusMessageTv"
+            android:layout_gravity="right"
+            android:layout_above="@+id/samplecounter"
+            android:layout_toRightOf="@+id/distance"
+            android:layout_toEndOf="@+id/distance" />
 
-    <TextView
-        android:layout_width="73dp"
-        android:layout_height="27dp"
-        android:text="Accel"
-        android:id="@+id/gyrosensorname"
-        android:layout_gravity="right" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Count"
+            android:id="@+id/samplecounter"
+            android:layout_gravity="right"
+            android:layout_marginBottom="37dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/statusMessageTv"
+            android:layout_alignStart="@+id/statusMessageTv" />
 
-    <TextView
-        android:layout_width="76dp"
-        android:layout_height="wrap_content"
-        android:text="Count"
-        android:id="@+id/samplecounter"
-        android:layout_gravity="right" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Accel"
+            android:id="@+id/gyrosensorname"
+            android:layout_gravity="right"
+            android:layout_above="@+id/accelsensorname"
+            android:layout_alignLeft="@+id/accelsensorname"
+            android:layout_alignStart="@+id/accelsensorname" />
 
-    <TextView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:text="Status"
-        android:id="@+id/statusMessageTv"
-        android:layout_gravity="right" />
+        <raunio.gforcetracker.BallPanel
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/ballPanel"
+            android:layout_gravity="left|right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/distance"
+            android:layout_toStartOf="@+id/distance" />
 
-    <raunio.gforcetracker.BallPanel
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:id="@+id/ballPanel"
-        android:layout_gravity="left|right" />
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+            android:layout_height="275dp" android:id="@+id/map" tools:context=".MapsActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_weight="0.93"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/speech_synthesis"
+            android:layout_above="@+id/ballPanel" />
+    </RelativeLayout>
 
-    <TextView
-        android:layout_width="62dp"
-        android:layout_height="26dp"
-        android:text="Gyro"
-        android:id="@+id/accelsensorname"
-        android:layout_gravity="right" />
-
-</LinearLayout>

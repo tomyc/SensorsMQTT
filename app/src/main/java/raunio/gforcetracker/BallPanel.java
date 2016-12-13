@@ -53,7 +53,7 @@ public class BallPanel extends SurfaceView implements SurfaceHolder.Callback {
         if (ball){
             float cx = halfWidth + (halfWidth*(x/SCALE));
             float cy = halfHeight + (halfHeight*(y/SCALE));
-            float radius = 50+(50*(z/SCALE));
+            float radius = 25+(50*(z/SCALE));
             if (radius<0.0f){
                 radius = 1.0f;
             }

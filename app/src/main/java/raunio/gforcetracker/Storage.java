@@ -25,7 +25,7 @@ public class Storage {
 
     private String path;
 
-    public static final String BROKER_URL = "tcp://test.mosquitto.org:1883";
+    public static final String BROKER_URL = "tcp://iot.eclipse.org:1883";
     public static final String TOPIC = "gforce/data";
     //public Long timestamp = System.currentTimeMillis()/1000;
 

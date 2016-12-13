@@ -92,7 +92,7 @@ public class SamplingService extends Service implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         stopSampling();
-        rate = SensorManager.SENSOR_DELAY_FASTEST;
+        rate = 10; //SensorManager.SENSOR_DELAY_FASTEST;
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         startSampling();
         return START_NOT_STICKY;

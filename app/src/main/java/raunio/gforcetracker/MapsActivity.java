@@ -16,6 +16,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -57,7 +58,7 @@ public class MapsActivity
     private GoogleMap map;
     private CameraPosition lastCameraPostion;
 
-    private TextView speed, gforce, distance, lat, lon;
+    private TextView speedTV, gforce, distance, lat, lon;
     private CheckBox speech_synthesis;
 
     private GoogleApiClient googleApi;
@@ -76,7 +77,7 @@ public class MapsActivity
     private Storage storage;
     private Object storageHandle;
 
-    private ContentResolver cr; //zmienna do odczytu ID urządzenia w klasie Sorage
+    private ContentResolver cr; //zmienna do odczytu ID urządzenia w klasie Storage
 
     public static BallPanel ballPanel = null;
     private TextView sampleCounterTV;
@@ -87,6 +88,21 @@ public class MapsActivity
     private int state = SamplingService.ENGINESTATUS_IDLE;
     private TextView statusMessageTV;
     private SamplingServiceConnection samplingServiceConnection = null;
+    private double sampServ_x;
+    private double sampServ_y;
+    private double sampServ_z;
+
+    private LatLng latLng;
+
+    private float ax;
+    private float ay;
+    private float az;
+    private float axMax;
+    private float ayMax;
+    private float azMax;
+    private float speed;
+    private float samlSerc_arr[];
+    //private float maxSpeed;
 
 
     @Override
@@ -236,13 +252,55 @@ public class MapsActivity
             }
         }
 
+        class writeResults extends AsyncTask<String, Integer, String>{
+
+            @Override
+            protected String doInBackground(String... strings) {
+                try {
+                    storage.write(storageHandle, cr, latLng, speed, maxSpeed, samlSerc_arr[0], samlSerc_arr[1], samlSerc_arr[2], axMax, ayMax, azMax);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }
+
+
+
+
         @Override
         public void diff(double x, double y, double z) throws RemoteException {
+            /*sampServ_x = x;
+            sampServ_y = y;
+            sampServ_z = z;
+            samlSerc_arr =  new float[] {(float) sampServ_x, (float) sampServ_y, (float) sampServ_z};*/
+
+            samlSerc_arr =  new float[3];
+
+            samlSerc_arr[0]=(float)x;
+            samlSerc_arr[1]=(float)y;
+            samlSerc_arr[2]=(float)z;
+
+            if (sensorSamples.size() > MAX_SAMPLES)
+                sensorSamples.removeFirst();
+
+            sensorSamples.addLast(samlSerc_arr);
+
+            new writeResults().execute("");
+
             if( ballPanel != null ) {
                 SurfaceHolder holder = ballPanel.getHolder();
                 Canvas c = holder.lockCanvas();
+                //
+                //gforce.setText(String.format("%.2f", getTotalAcceleration( sampServ_x, sampServ_y, sampServ_z)));
+                gforce.setText(String.format("%.2f", getTotalAcceleration(samlSerc_arr)));
+                //
                 if( c != null ) {
-                    ballPanel.drawBall(c, true, (float)x, (float)y, (float)z);
+                    //
+
+                    //
+                    //ballPanel.drawBall(c, true, (float)sampServ_x, (float)sampServ_y, (float)sampServ_z);
+                    ballPanel.drawBall(c, true, samlSerc_arr[0], samlSerc_arr[1], samlSerc_arr[2]);
                     holder.unlockCanvasAndPost(c);
                 }
             }
@@ -279,14 +337,14 @@ public class MapsActivity
 
         // Write last location.
         if (lastLocation != null) {
-            float ax = getAverageSensor(0);
-            float ay = getAverageSensor(1);
-            float az = getAverageSensor(2);
-            float axMax = getMaxSensor(0);
-            float ayMax = getMaxSensor(1);
-            float azMax = getMaxSensor(2);
-            float speed = getAverageSpeed();
-            float maxSpeed = getMaxSpeed();
+            ax = getAverageSensor(0);
+            ay = getAverageSensor(1);
+            az = getAverageSensor(2);
+            axMax = getMaxSensor(0);
+            ayMax = getMaxSensor(1);
+            azMax = getMaxSensor(2);
+            speed = getAverageSpeed();
+            maxSpeed = getMaxSpeed();
 
             try {
                 storage.write(storageHandle, cr, new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), speed, maxSpeed, ax, ay, az, axMax, ayMax, azMax);
@@ -352,12 +410,11 @@ public class MapsActivity
 
     @Override
     public void onLocationChanged(Location location) {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
+        latLng = new LatLng(location.getLatitude(), location.getLongitude());
         if (startLocation != null)
             totalDistance += startLocation.distanceTo(location);
 
-        speed.setText(String.format("%.2f", location.getSpeed()));
+        speedTV.setText(String.format("%.2f", location.getSpeed()));
         distance.setText(String.format("%.2f", totalDistance));
         lat.setText(latLng.latitude + "");
         lon.setText(latLng.longitude + "");
@@ -370,17 +427,18 @@ public class MapsActivity
 
         // Write initial location.
         if (lastLocation == null) {
-            float ax = getAverageSensor(0);
-            float ay = getAverageSensor(1);
-            float az = getAverageSensor(2);
-            float axMax = getMaxSensor(0);
-            float ayMax = getMaxSensor(1);
-            float azMax = getMaxSensor(2);
-            float speed = getAverageSpeed();
-            float maxSpeed = getMaxSpeed();
+            ax = getAverageSensor(0);
+            ay = getAverageSensor(1);
+            az = getAverageSensor(2);
+            axMax = getMaxSensor(0);
+            ayMax = getMaxSensor(1);
+            azMax = getMaxSensor(2);
+            speed = getAverageSpeed();
+            maxSpeed = getMaxSpeed();
 
             try {
                 storage.write(storageHandle, cr, latLng, speed, maxSpeed, ax, ay, az, axMax, ayMax, azMax);
+                //storage.write(storageHandle, cr, latLng, speed, maxSpeed, ax, ay, az, axMax, ayMax, azMax);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -390,17 +448,17 @@ public class MapsActivity
 
         // Draw and store route to current location if moved more than 10m from last location. Also,
         // clear the sensor and speed samples.
-        if (location.distanceTo(lastLocation) >= 10.f) {
+        if (location.distanceTo(lastLocation) >= 2.f) {
             PolylineOptions lineOptions = new PolylineOptions();
 
-            float ax = getAverageSensor(0);
-            float ay = getAverageSensor(1);
-            float az = getAverageSensor(2);
-            float axMax = getMaxSensor(0);
-            float ayMax = getMaxSensor(1);
-            float azMax = getMaxSensor(2);
-            double a = getTotalAcceleration(new float[] {ax, ay, az});
-            double aMax = getTotalAcceleration(new float[] {axMax, ayMax, azMax});
+            ax = getAverageSensor(0);
+            ay = getAverageSensor(1);
+            az = getAverageSensor(2);
+            axMax = getMaxSensor(0);
+            ayMax = getMaxSensor(1);
+            azMax = getMaxSensor(2);
+            double a = getTotalAcceleration(new float[] {ax, ay, az}); //getTotalAcceleration(ax, ay, az); //getTotalAcceleration(new float[] {ax, ay, az});
+            double aMax = getTotalAcceleration(new float[] {axMax, ayMax, azMax}); //getTotalAcceleration(axMax, ayMax, azMax); //getTotalAcceleration(new float[] {axMax, ayMax, azMax});
             float speed = getAverageSpeed();
             float maxSpeed = getMaxSpeed();
 
@@ -503,12 +561,12 @@ public class MapsActivity
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (sensorSamples.size() > MAX_SAMPLES)
+       /* if (sensorSamples.size() > MAX_SAMPLES)
             sensorSamples.removeFirst();
 
-        sensorSamples.addLast(event.values);
+        sensorSamples.addLast(event.values);*/
 
-        gforce.setText(String.format("%.2f", getTotalAcceleration(event.values)));
+        //gforce.setText(String.format("%.2f", getTotalAcceleration(event.values)));
     }
 
     @Override
@@ -529,6 +587,14 @@ public class MapsActivity
         else
             tts.speak("Komunikaty głosowe wyłączone", TextToSpeech.QUEUE_FLUSH, null, "end");
     }
+
+
+
+   /* private double getTotalAcceleration(double x, double y, double z) {
+        return Math.sqrt(x * x +
+                y * y +
+                z * z) / 9.81;
+    }*/
 
     private double getTotalAcceleration(float[] values) {
         return Math.sqrt(values[0] * values[0] +
@@ -582,7 +648,7 @@ public class MapsActivity
             map.setMyLocationEnabled(true);
             map.getUiSettings().setAllGesturesEnabled(false);
             map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            map.setTrafficEnabled(true);
+            //map.setTrafficEnabled(true);
 
            /* lastCameraPostion = new CameraPosition.Builder()
                     .target(latLng)
@@ -600,8 +666,8 @@ public class MapsActivity
             sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
 
-        if (speed == null)
-            speed = (TextView) findViewById(R.id.speed);
+        if (speedTV == null)
+            speedTV = (TextView) findViewById(R.id.speed);
 
         if (gforce == null)
             gforce = (TextView) findViewById(R.id.gforce);
